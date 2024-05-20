@@ -38,7 +38,7 @@ module.exports = {
         'useTabs': true,
         'semi': true,
         'bracketSpacing': true,
-        'printWidth': 95,
+        'printWidth': 90,
         'endOfLine': 'auto'
       }
     ]
