@@ -10,10 +10,17 @@ import {
 	ValidationPipe,
 	Headers,
 	Query,
+	Param,
+	NotFoundException,
+	UseGuards,
 } from '@nestjs/common';
-import { ALREADY_REGISTERED_ERROR } from './auth.constants';
+import { ALREADY_REGISTERED_ERROR, ID_USER_NOT_FOUND_ERROR } from './auth.constants';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
+import type { DocumentType } from '@typegoose/typegoose/lib/types';
+import type { UserModel } from './user.model';
+import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
+import { JwtAuthGuard } from './guards/jwt.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -21,16 +28,11 @@ export class AuthController {
 	@UsePipes(new ValidationPipe())
 	@Post('register')
 	async register(@Body() dto: AuthDto) {
-		const oldUser = await this.authService.findUser(dto.email);
+		const oldUser = await this.authService.findUserByEmail(dto.email);
 		if (oldUser) {
 			throw new BadRequestException(ALREADY_REGISTERED_ERROR);
 		}
 		return this.authService.createUser(dto);
-	}
-
-	@Get('user')
-	async getUser(@Headers('email') email: string) {
-		return this.authService.findUser(email);
 	}
 
 	@UsePipes(new ValidationPipe())
@@ -41,8 +43,24 @@ export class AuthController {
 		return this.authService.login(email);
 	}
 
-	@Delete('deleteUser')
-	async deleteUser(@Query('email') email: string) {
-		return this.authService.deleteUser(email);
+	@UseGuards(new JwtAuthGuard())
+	@Get('user/:id')
+	async getUser(
+		@Param('id', IdValidationPipe) id: string,
+	): Promise<DocumentType<UserModel>> {
+		const user = await this.authService.findUserById(id);
+		if (!user) {
+			throw new NotFoundException(ID_USER_NOT_FOUND_ERROR);
+		}
+		return user;
+	}
+
+	@UseGuards(new JwtAuthGuard())
+	@Delete('user/:id')
+	async deleteUser(@Param('id', IdValidationPipe) id: string): Promise<void> {
+		const deletedUser = await this.authService.deleteUser(id);
+		if (!deletedUser) {
+			throw new NotFoundException(ID_USER_NOT_FOUND_ERROR);
+		}
 	}
 }

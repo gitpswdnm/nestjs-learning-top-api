@@ -9,7 +9,7 @@ export enum TopLevelCategory {
 	Products,
 }
 
-export class HhData {
+class HhData {
 	@prop()
 	count: number;
 	@prop()
@@ -20,7 +20,7 @@ export class HhData {
 	seniorSalary: number;
 }
 
-export class TopPageAdvantage {
+class TopPageAdvantage {
 	@prop()
 	title: string;
 	@prop()
@@ -30,7 +30,7 @@ export class TopPageAdvantage {
 export interface TopPageModel extends Base {}
 export class TopPageModel extends TimeStamps {
 	@prop({ enum: TopLevelCategory })
-	firstLevelCategory: TopLevelCategory;
+	firstCategory: TopLevelCategory;
 	@prop()
 	secondCategory: string;
 	@prop()
