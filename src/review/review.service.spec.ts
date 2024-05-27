@@ -8,9 +8,7 @@ describe('ReviewService', () => {
 	let service: ReviewService;
 
 	const exec = { exec: jest.fn() };
-	const reviewRepositoryFactory = (): {
-		find: () => { exec: jest.Mock<any, any, any> };
-	} => ({
+	const reviewRepositoryFactory = () => ({
 		find: () => exec,
 	});
 
