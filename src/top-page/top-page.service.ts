@@ -32,6 +32,12 @@ export class TopPageService {
 			.exec();
 	}
 
+	async findByText(text: string): Promise<DocumentType<TopPageModel>[]> {
+		return this.topPageModel
+			.find({ $text: { $search: text, $caseSensitive: false } })
+			.exec();
+	}
+
 	async deleteById(id: string): Promise<DocumentType<TopPageModel>> {
 		return this.topPageModel.findByIdAndDelete(id).exec();
 	}

@@ -22,6 +22,7 @@ import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 import {
 	ALIAS_MUST_BE_UNIQ_ERROR,
 	CATEGORY_NOT_FOUND_ERROR,
+	TEXT_SEARCH_NOT_FOUND_ERROR,
 	TOP_PAGE_NOT_FOND_ERROR,
 } from './top-page.constants';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
@@ -94,6 +95,15 @@ export class TopPageController {
 		const pages = await this.topPageService.findByCategory(firstCategory);
 		if (!pages.length) {
 			throw new NotFoundException(CATEGORY_NOT_FOUND_ERROR);
+		}
+		return pages;
+	}
+
+	@Get('textSearch/:text')
+	async textSearch(@Param('text') text: string): Promise<DocumentType<TopPageModel>[]> {
+		const pages = await this.topPageService.findByText(text);
+		if (!pages.length) {
+			throw new NotFoundException(TEXT_SEARCH_NOT_FOUND_ERROR);
 		}
 		return pages;
 	}
