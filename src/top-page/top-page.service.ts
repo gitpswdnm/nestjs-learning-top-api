@@ -28,7 +28,14 @@ export class TopPageService {
 		firstCategory: TopLevelCategory,
 	): Promise<DocumentType<Pick<TopPageModel, 'alias' | 'secondCategory' | 'title'>>[]> {
 		return this.topPageModel
-			.find({ firstCategory: firstCategory }, { alias: 1, secondCategory: 1, title: 1 })
+			.aggregate()
+			.match({
+				firstCategory,
+			})
+			.group({
+				_id: { secondCategory: '$secondCategory' },
+				pages: { $push: { alias: '$alias', title: '$title' } },
+			})
 			.exec();
 	}
 
