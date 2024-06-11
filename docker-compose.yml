@@ -1,0 +1,9 @@
+services:
+    top-api:
+      image: top-api:latest
+      container_name: top_api
+      restart: always
+      ports:
+        - 3000:3000
+      volumes:
+        - ./.env:/opt/app/.env
