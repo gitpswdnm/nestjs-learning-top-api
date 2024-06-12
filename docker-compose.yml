@@ -1,6 +1,6 @@
 services:
     top-api:
-      image: docker pull ghcr.io/gitpswdnm/nestjs-learning-top-api/top-api-demo:develop
+      image: ghcr.io/gitpswdnm/nestjs-learning-top-api/top-api-demo:develop
       container_name: top_api
       restart: always
       ports:
