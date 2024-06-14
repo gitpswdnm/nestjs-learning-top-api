@@ -24,6 +24,10 @@ export class TopPageService {
 		return this.topPageModel.findOne({ alias }).exec();
 	}
 
+	async findAll(): Promise<DocumentType<TopPageModel>[]> {
+		return this.topPageModel.find({}).exec();
+	}
+
 	async findByCategory(
 		firstCategory: TopLevelCategory,
 	): Promise<DocumentType<Pick<TopPageModel, 'alias' | 'secondCategory' | 'title'>>[]> {
