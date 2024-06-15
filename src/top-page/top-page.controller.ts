@@ -14,18 +14,18 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import type { DocumentType } from '@typegoose/typegoose/lib/types';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 import { CreateTopPageDto } from './dto/create-top-page.dto';
 import { FindTopPageDto } from './dto/find-top-page.dto';
-import type { TopPageModel } from './top-page.model';
-import { TopPageService } from './top-page.service';
-import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 import {
 	ALIAS_MUST_BE_UNIQ_ERROR,
 	CATEGORY_NOT_FOUND_ERROR,
 	TEXT_SEARCH_NOT_FOUND_ERROR,
 	TOP_PAGE_NOT_FOND_ERROR,
 } from './top-page.constants';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import type { TopPageModel } from './top-page.model';
+import { TopPageService } from './top-page.service';
 
 @Controller('top-page')
 export class TopPageController {
